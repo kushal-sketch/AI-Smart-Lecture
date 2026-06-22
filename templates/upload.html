@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Upload a lecture — LectureMind{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">{% endblock %}
+{% block content %}
+
+<div class="upload-shell">
+  <span class="eyebrow">Step 1 of 1</span>
+  <h1 style="font-size:2rem; margin-bottom:.5rem;">Upload a lecture recording</h1>
+  <p style="margin-bottom:2rem;">We'll transcribe it, then generate notes, a quiz and flashcards automatically.</p>
+
+  <form id="upload-form" class="card" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+    <div class="form-group">
+      <label class="form-label" for="lecture_name">Lecture name (optional)</label>
+      <input class="form-control" type="text" id="lecture_name" name="lecture_name" placeholder="e.g. Thermodynamics — Lecture 4">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Audio file</label>
+      <div class="dropzone" id="dropzone">
+        <div class="icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+        </div>
+        <p style="margin:0;">Drag &amp; drop your .mp3 or .wav file here, or click to browse</p>
+        <div class="filename" id="filename-preview" style="display:none;"></div>
+      </div>
+      <input type="file" id="audio_file" name="audio_file" accept=".mp3,.wav,.m4a" style="display:none;" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Language</label>
+      <div class="lang-pills">
+        {% for code, name in languages.items() %}
+        <label class="lang-pill {{ 'selected' if code == 'en' }}">
+          <input type="radio" name="language" value="{{ code }}" {{ 'checked' if code == 'en' }}>
+          {{ name }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" id="submit-btn" class="btn btn-primary btn-block">Upload &amp; generate study kit</button>
+
+    <div class="upload-steps">
+      <span><span class="dot active"></span> Upload</span>
+      <span><span class="dot"></span> Transcribe</span>
+      <span><span class="dot"></span> Notes</span>
+      <span><span class="dot"></span> Quiz</span>
+      <span><span class="dot"></span> Flashcards</span>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/upload.js') }}"></script>{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}History — LectureMind{% endblock %}
+{% block content %}
+
+<span class="eyebrow">All lectures</span>
+<h1 style="font-size:1.9rem; margin-bottom:1.4rem;">Lecture history</h1>
+
+{% if lectures %}
+<div class="card" style="padding:0; overflow:hidden;">
+  <table class="data-table">
+    <thead><tr><th>Lecture</th><th>Language</th><th>Status</th><th>Date</th><th></th></tr></thead>
+    <tbody>
+      {% for l in lectures %}
+      <tr>
+        <td>{{ l.lecture_name }}</td>
+        <td>{{ l.language|upper }}</td>
+        <td><span class="status-pill status-{{ l.status }}">{{ l.status }}</span></td>
+        <td>{{ l.created_at }}</td>
+        <td style="display:flex; gap:.5rem;">
+          {% if l.status == 'done' %}
+          <a href="{{ url_for('notes_page', lecture_id=l.id) }}" class="btn-ghost-nav" style="font-size:.75rem;">Open</a>
+          {% else %}
+          <a href="{{ url_for('process_lecture', lecture_id=l.id) }}" class="btn-ghost-nav" style="font-size:.75rem;">Process</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:2.5rem;">
+  <p style="margin-bottom:1.2rem;">No lectures uploaded yet.</p>
+  <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload a lecture</a>
+</div>
+{% endif %}
+
+{% endblock %}

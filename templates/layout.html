@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}AI Smart Lecture Assistant{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<header class="site-header">
+  <a href="{{ url_for('index') }}" class="brand">
+    <span class="brand-mark">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <path d="M4 19 Q 7 9, 10 19 T 16 19 T 22 19 T 26 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </span>
+    <span class="brand-text">Lecture<em>Mind</em></span>
+  </a>
+  <nav class="site-nav">
+    <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint=='index' }}">Home</a>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('upload') }}" class="{{ 'active' if request.endpoint=='upload' }}">Upload</a>
+    <a href="{{ url_for('dashboard_page') }}" class="{{ 'active' if request.endpoint=='dashboard_page' }}">Dashboard</a>
+    <a href="{{ url_for('history_page') }}" class="{{ 'active' if request.endpoint=='history_page' }}">History</a>
+    {% endif %}
+  </nav>
+  {% if current_user.is_authenticated %}
+  <div style="display:flex; align-items:center; gap:.9rem;">
+    <span style="font-size:.85rem; color:var(--ink-dim);">{{ current_user.username }}</span>
+    <a href="{{ url_for('logout') }}" class="btn-ghost-nav">Log out</a>
+  </div>
+  {% else %}
+  <div style="display:flex; align-items:center; gap:.7rem;">
+    <a href="{{ url_for('login') }}" class="btn-ghost-nav">Log in</a>
+    <a href="{{ url_for('signup') }}" class="btn-ghost-nav">Sign up</a>
+  </div>
+  {% endif %}
+</header>
+
+<main class="page-shell">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <span>LectureMind — turn lectures into notes, quizzes &amp; flashcards.</span>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

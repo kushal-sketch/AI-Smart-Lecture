@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block title %}LectureMind — AI Smart Lecture Assistant{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div>
+    <span class="eyebrow">Whisper AI · Gemini · Flask</span>
+    <h1>Every lecture, turned&nbsp;into notes you'll actually&nbsp;study.</h1>
+    <p class="lede">Upload a recorded lecture and LectureMind transcribes it, writes clean study notes, builds a quiz, and makes flashcards — in English, Hindi or Bengali.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload a lecture</a>
+      <a href="{{ url_for('dashboard_page') }}" class="btn btn-secondary">View dashboard</a>
+    </div>
+  </div>
+
+  <div class="waveform-art">
+    <svg viewBox="0 0 420 220" width="100%" height="auto">
+      <defs>
+        <linearGradient id="wave-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#F2B705"/>
+          <stop offset="100%" stop-color="#9C8CF2"/>
+        </linearGradient>
+      </defs>
+      <g stroke="url(#wave-grad)" stroke-width="3" stroke-linecap="round" fill="none">
+        <path d="M10 110 L10 95"/><path d="M24 110 L24 70"/><path d="M38 110 L38 130"/>
+        <path d="M52 110 L52 60"/><path d="M66 110 L66 145"/><path d="M80 110 L80 80"/>
+        <path d="M94 110 L94 120"/><path d="M108 110 L108 55"/><path d="M122 110 L122 150"/>
+        <path d="M136 110 L136 90"/><path d="M150 110 L150 70"/><path d="M164 110 L164 105"/>
+      </g>
+      <line x1="190" y1="110" x2="220" y2="110" stroke="#AEB3C4" stroke-width="2" stroke-dasharray="2 5"/>
+      <g fill="#ECE9E1" font-family="JetBrains Mono" font-size="13">
+        <rect x="236" y="58" width="170" height="10" rx="5" fill="#262E48"/>
+        <rect x="236" y="58" width="170" height="10" rx="5" fill="#F2B705" opacity="0.85"/>
+        <rect x="236" y="84" width="150" height="10" rx="5" fill="#262E48"/>
+        <rect x="236" y="84" width="120" height="10" rx="5" fill="#9C8CF2" opacity="0.8"/>
+        <rect x="236" y="110" width="160" height="10" rx="5" fill="#262E48"/>
+        <rect x="236" y="110" width="90" height="10" rx="5" fill="#5FC79A" opacity="0.8"/>
+        <rect x="236" y="136" width="120" height="10" rx="5" fill="#262E48"/>
+      </g>
+      <text x="236" y="42" fill="#AEB3C4" font-family="JetBrains Mono" font-size="11" letter-spacing="1">AUDIO → NOTES</text>
+    </svg>
+  </div>
+</section>
+
+<section>
+  <div class="section-head"><h2>How it works</h2></div>
+  <div class="grid-4">
+    <div class="card feature-card">
+      <span class="num">01</span>
+      <h3>Upload</h3>
+      <p>Drop in an .mp3 or .wav recording of your lecture.</p>
+    </div>
+    <div class="card feature-card">
+      <span class="num">02</span>
+      <h3>Transcribe</h3>
+      <p>Whisper AI converts the audio into a full text transcript.</p>
+    </div>
+    <div class="card feature-card">
+      <span class="num">03</span>
+      <h3>Generate</h3>
+      <p>Gemini writes notes, a quiz, and flashcards from the transcript.</p>
+    </div>
+    <div class="card feature-card">
+      <span class="num">04</span>
+      <h3>Export</h3>
+      <p>Download everything as one polished PDF report.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>Recent lectures</h2>
+    <a href="{{ url_for('history_page') }}" class="view-all">View all →</a>
+  </div>
+  {% if recent %}
+  <table class="data-table">
+    <thead><tr><th>Lecture</th><th>Language</th><th>Status</th><th>Date</th><th></th></tr></thead>
+    <tbody>
+      {% for l in recent %}
+      <tr>
+        <td>{{ l.lecture_name }}</td>
+        <td>{{ l.language|upper }}</td>
+        <td><span class="status-pill status-{{ l.status }}">{{ l.status }}</span></td>
+        <td>{{ l.created_at }}</td>
+        <td><a href="{{ url_for('notes_page', lecture_id=l.id) }}" class="btn-ghost-nav" style="font-size:.75rem;">Open</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="card" style="text-align:center; padding:2.5rem;">
+    <p style="margin-bottom:1.2rem;">No lectures yet — upload your first recording to see it here.</p>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload a lecture</a>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}

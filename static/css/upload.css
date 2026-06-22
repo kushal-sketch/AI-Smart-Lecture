@@ -1,0 +1,7 @@
+/* upload.css — extra styles specific to the upload flow */
+
+.upload-shell { max-width: 620px; margin: 0 auto; }
+.upload-steps { display: flex; gap: 1.4rem; margin-top: 1.5rem; font-size: .8rem; color: var(--ink-dim); font-family: var(--font-mono); }
+.upload-steps span { display: flex; align-items: center; gap: .4rem; }
+.upload-steps .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-dim); }
+.upload-steps .dot.active { background: var(--amber); }

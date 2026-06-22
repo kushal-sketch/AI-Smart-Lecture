@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+database/database.db
+uploads/audio_files/*
+!uploads/audio_files/.gitkeep
+uploads/temporary_files/*
+!uploads/temporary_files/.gitkeep
+generated/**/*
+!generated/**/.gitkeep
+.env
+venv/
+.vscode/

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block title %}Notes — {{ lecture.lecture_name }}{% endblock %}
+{% block content %}
+
+<span class="eyebrow">{{ lecture.language|upper }} · {{ lecture.created_at }}</span>
+<h1 style="font-size:1.9rem; margin-bottom:1.4rem;">{{ lecture.lecture_name }}</h1>
+
+<div class="lecture-subnav">
+  <a href="{{ url_for('transcript_page', lecture_id=lecture.id) }}">Transcript</a>
+  <a href="{{ url_for('notes_page', lecture_id=lecture.id) }}" class="active">Notes</a>
+  <a href="{{ url_for('quiz_page', lecture_id=lecture.id) }}">Quiz</a>
+  <a href="{{ url_for('flashcards_page', lecture_id=lecture.id) }}">Flashcards</a>
+  <a href="{{ url_for('report_page', lecture_id=lecture.id) }}">Report</a>
+</div>
+
+<div style="display:flex; justify-content:flex-end; gap:.5rem; margin-bottom:1rem;">
+  <button class="btn btn-secondary" data-lang="en" onclick="loadTranslation('en')">English</button>
+  <button class="btn btn-secondary" data-lang="hi" onclick="loadTranslation('hi')">Hindi</button>
+  <button class="btn btn-secondary" data-lang="bn" onclick="loadTranslation('bn')">Bengali</button>
+</div>
+
+<div class="card-paper">
+  <div class="prose-block" id="notes-content">{{ notes | markdown | safe }}</div>
+</div>
+
+<div class="card ask-ai-card" style="margin-top:1.5rem;">
+  <h3 style="margin-top:0;">Ask AI about this lecture</h3>
+  <p style="font-size:.9rem; color:var(--ink-dim); margin-bottom:1rem;">
+    Type a question and get an answer grounded in this lecture's transcript.
+  </p>
+  <div style="display:flex; gap:.6rem;">
+    <input class="form-control" type="text" id="ask-ai-input"
+           placeholder="e.g. What's the second law of thermodynamics?"
+           onkeydown="if(event.key==='Enter'){askAi();}">
+    <button class="btn btn-primary" id="ask-ai-btn" onclick="askAi()" style="white-space:nowrap;">Ask</button>
+  </div>
+  <div id="ask-ai-answer" class="ask-ai-answer" style="display:none;"></div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+  function loadTranslation(lang) {
+    const el = document.getElementById("notes-content");
+    el.style.opacity = "0.5";
+    fetch(`{{ url_for('translate_notes', lecture_id=lecture.id) }}?lang=${lang}`)
+      .then((r) => r.json())
+      .then((data) => {
+        el.textContent = data.translated;
+        el.style.opacity = "1";
+      });
+  }
+
+  function askAi() {
+    const input = document.getElementById("ask-ai-input");
+    const btn = document.getElementById("ask-ai-btn");
+    const answerBox = document.getElementById("ask-ai-answer");
+    const question = input.value.trim();
+    if (!question) return;
+
+    btn.disabled = true;
+    btn.textContent = "Thinking…";
+    answerBox.style.display = "block";
+    answerBox.textContent = "…";
+
+    fetch(`{{ url_for('ask_ai', lecture_id=lecture.id) }}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: question }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        answerBox.textContent = data.answer || data.error || "Something went wrong.";
+      })
+      .catch(() => {
+        answerBox.textContent = "Something went wrong — please try again.";
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "Ask";
+      });
+  }
+</script>
+{% endblock %}

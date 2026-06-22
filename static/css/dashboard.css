@@ -1,0 +1,6 @@
+/* dashboard.css — extra styles specific to the analytics dashboard */
+
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+
+@media (max-width: 920px) { .dash-stats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .dash-stats { grid-template-columns: 1fr; } }

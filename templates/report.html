@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Report — {{ lecture.lecture_name }}{% endblock %}
+{% block content %}
+
+<span class="eyebrow">{{ lecture.language|upper }} · {{ lecture.created_at }}</span>
+<h1 style="font-size:1.9rem; margin-bottom:1.4rem;">{{ lecture.lecture_name }}</h1>
+
+<div class="lecture-subnav">
+  <a href="{{ url_for('transcript_page', lecture_id=lecture.id) }}">Transcript</a>
+  <a href="{{ url_for('notes_page', lecture_id=lecture.id) }}">Notes</a>
+  <a href="{{ url_for('quiz_page', lecture_id=lecture.id) }}">Quiz</a>
+  <a href="{{ url_for('flashcards_page', lecture_id=lecture.id) }}">Flashcards</a>
+  <a href="{{ url_for('report_page', lecture_id=lecture.id) }}" class="active">Report</a>
+</div>
+
+<div class="card" style="text-align:center; padding:3rem;">
+  <div style="color:var(--amber); margin-bottom:1.2rem;">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h6"/></svg>
+  </div>
+  <h2 style="margin-bottom:.6rem;">Full PDF report</h2>
+  <p style="max-width:42ch; margin-left:auto; margin-right:auto;">Includes the transcript, study notes, quiz and flashcards for this lecture in one document.</p>
+  <a href="{{ url_for('download_report', lecture_id=lecture.id) }}" class="btn btn-primary">Download PDF report</a>
+</div>
+
+{% endblock %}

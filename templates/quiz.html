@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Quiz — {{ lecture.lecture_name }}{% endblock %}
+{% block content %}
+
+<span class="eyebrow">{{ lecture.language|upper }} · {{ lecture.created_at }}</span>
+<h1 style="font-size:1.9rem; margin-bottom:1.4rem;">{{ lecture.lecture_name }}</h1>
+
+<div class="lecture-subnav">
+  <a href="{{ url_for('transcript_page', lecture_id=lecture.id) }}">Transcript</a>
+  <a href="{{ url_for('notes_page', lecture_id=lecture.id) }}">Notes</a>
+  <a href="{{ url_for('quiz_page', lecture_id=lecture.id) }}" class="active">Quiz</a>
+  <a href="{{ url_for('flashcards_page', lecture_id=lecture.id) }}">Flashcards</a>
+  <a href="{{ url_for('report_page', lecture_id=lecture.id) }}">Report</a>
+</div>
+
+{% for q in quiz %}
+<div class="card quiz-item" data-answer="{{ q.answer }}">
+  <div class="q-text">{{ loop.index }}. {{ q.question }}</div>
+  <div class="quiz-options">
+    {% for opt in q.options %}
+    <div class="quiz-option">{{ opt }}</div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

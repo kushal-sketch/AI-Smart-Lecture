@@ -1,0 +1,7 @@
+<svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#F2B705" stroke-width="2.4" stroke-linecap="round" fill="none">
+    <path d="M4 24 L4 16"/><path d="M10 24 L10 8"/><path d="M16 24 L16 30"/>
+    <path d="M22 24 L22 12"/><path d="M28 24 L28 32"/>
+  </g>
+  <text x="38" y="27" font-family="Georgia, serif" font-size="20" fill="#ECE9E1">Lecture<tspan fill="#F2B705">Mind</tspan></text>
+</svg>

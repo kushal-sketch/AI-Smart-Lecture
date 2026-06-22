@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Log in — LectureMind{% endblock %}
+{% block content %}
+
+<div class="upload-shell">
+  <span class="eyebrow">Welcome back</span>
+  <h1 style="font-size:2rem; margin-bottom:.5rem;">Log in to LectureMind</h1>
+  <p style="margin-bottom:2rem;">Access your transcripts, notes, quizzes and flashcards.</p>
+
+  <form class="card" method="POST" action="{{ url_for('login') }}">
+    <div class="form-group">
+      <label class="form-label" for="username">Username</label>
+      <input class="form-control" type="text" id="username" name="username" required autofocus>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password</label>
+      <input class="form-control" type="password" id="password" name="password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+
+    <p style="margin-top:1.2rem; font-size:.9rem; text-align:center;">
+      Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a>
+    </p>
+  </form>
+</div>
+
+{% endblock %}
